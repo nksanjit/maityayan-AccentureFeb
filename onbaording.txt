@@ -1,0 +1,51 @@
+
+
+IDX >>>>>
+
+>>> Create an index called "accenture"
+
+GUI ----
+
+Settings >>> Indexes >>>> New Index 
+
+put the name "accenture" and save it.
+
+-------------------------------------------------------------------------------------
+
+UF 
+
+>>>>>
+
+/tmp/a.txt 
+
+
+-------
+
+inputs.conf 
+
+# cd /opt/splunkforwarder/etc/system/local
+
+
+vi inputs.conf 
+
+
+[monitor://<path of the log file>]
+sourcetype = <sourcetype_name>
+index = <index_name>
+
+
+
+[monitor:///tmp/a.txt]
+sourcetype = testlog
+index = accenture 
+
+
+
+# cd /opt/splunkforwarder/bin
+# ./splunk restart 
+
+
+OR 
+
+# /opt/splunkforwarder/bin/splunk restart 
+
