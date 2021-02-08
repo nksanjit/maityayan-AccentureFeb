@@ -115,7 +115,9 @@ username of idx : admin
 pass of idx : 12345678
 confirm pass : 12345678
 
+From CLI >>>>
 
+# ./splunk add search-server <scheme>://<host>:<port> -auth <user>:<password> -remoteUsername <user> -remotePassword <passremote>
 
 
 ---------------------
