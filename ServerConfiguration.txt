@@ -1,0 +1,126 @@
+
+UF --- 192.168.72.128
+HF --- 192.168.72.129
+IDX --- 192.168.72.130
+SH --- 192.168.72.131
+
+uf ---- /opt/splunkforwarder -- $SPLUNK_HOME
+hf /idx / sh --- /opt/splunk - $SPLUNK_HOME
+
+>>>>>>>
+
+UF : 
+
+CLI -----
+
+# cd /opt/splunkforwarder/bin
+# ./splunk add forward-server <ip_hf>:9997
+# ./splunk add forward-server 192.168.72.129:9997
+
+outputs.conf >>>
+
+# cd /opt/splunkforwarder/etc/system/local
+# cat outputs.conf
+
+-----------------------------------------------------------------------------------------------
+
+HF : 
+
+Enable 9997 port 
+
+GUI >>> 
+
+Settings >> Forwarding and Receiving >>> Configure Receiving 
+
+---- New receiving port --- 
+  put -- 9997  adnd save it 
+  
+ ------
+ 
+ CLI >>>>
+# cd /opt/splunk/bin
+# ./splunk enable listen 9997
+
+
+inputs.conf 
+
+# cd /opt/splunk/etc/apps/search/local
+# cat inputs.conf
+
+
+
+Add indexer server 
+CLI -----
+
+# cd /opt/splunk/bin
+# ./splunk add forward-server <ip_idx>:9997
+# ./splunk add forward-server 192.168.72.130:9997
+
+outputs.conf >>>
+
+# cd /opt/splunk/etc/system/local
+# cat outputs.conf
+
+------------------------------------------------------------------------------------------------------------
+ IDX --- 
+ Enable 9997 port 
+ 
+GUI >>> 
+
+Settings >> Forwarding and Receiving >>> Configure Receiving 
+
+---- New receiving port --- 
+  put -- 9997  adnd save it 
+  
+ ------
+ 
+ CLI >>>>
+# cd /opt/splunk/bin
+# ./splunk enable listen 9997
+
+
+inputs.conf 
+
+# cd /opt/splunk/etc/apps/search/local
+# cat inputs.conf
+
+
+change the server name : 
+
+# cd /opt/splunk/etc/system/local
+# vi server.conf 
+
+serverName = indexer 
+
+# cd /opt/splunk/bin
+# ./splunk restart
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------
+ SH >>>>>
+ GUI >>> 
+
+Settings >>  Distributed Search >>>
+
+Add new peer >>>>
+
+https://<idx_ip>:8089
+
+username of idx : admin
+pass of idx : 12345678
+confirm pass : 12345678
+
+
+
+
+---------------------
+Restart 
+
+SH >>> IDX >>>> HF >>>> UF 
+
+
