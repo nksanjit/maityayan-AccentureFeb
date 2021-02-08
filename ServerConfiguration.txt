@@ -8,4 +8,25 @@ SH --- 192.168.72.131
 
 -------------------------
 
+UF ---
+
+# cd /root/Desktop/Splunk 8.1.0 
+
+# cp splunkforwarder.....tgz   /opt
+
+# cd /opt
+
+# tar -xvzf splunkforwarder...tgz 
+
+# cd splunkforwarder/bin 
+
+# ./splunk start --accept-license
+
+   >>> Admin user name : admin
+   >>>> Admin use pass : 12345678
+   >>>> confirm pass   : 12345678
+
+# ./splunk status | start | stop | restart 
+# ./splunk --version
+
 
