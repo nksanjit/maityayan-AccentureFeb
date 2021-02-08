@@ -1,10 +1,7 @@
-
 UF --- 192.168.72.128
 HF --- 192.168.72.129
 IDX --- 192.168.72.130
 SH --- 192.168.72.131
-
-
 
 -------------------------
 
@@ -28,5 +25,32 @@ UF ---
 
 # ./splunk status | start | stop | restart 
 # ./splunk --version
+
+# ./splunk enable boot-start 
+
+---------------------------------------------
+HF / IDX / SH ----- 
+
+# cd /root/Desktop/Splunk 8.1.0 
+
+# cp splunk.....tgz   /opt
+
+# cd /opt
+
+# tar -xvzf splunk...tgz 
+
+# cd splunk/bin 
+
+# ./splunk start --accept-license
+
+   >>> Admin user name : admin
+   >>>> Admin use pass : 12345678
+   >>>> confirm pass   : 12345678
+
+# ./splunk status | start | stop | restart 
+# ./splunk --version
+
+# ./splunk enable boot-start
+
 
 
