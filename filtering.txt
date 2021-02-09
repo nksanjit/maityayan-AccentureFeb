@@ -62,10 +62,10 @@ TRANSFORMS-filter = one,two
 
 [one]
 REGEX= .
-FORMAT = queue
-DEST_KEY = nullQueue
+DEST_KEY = queue
+FORMAT = nullQueue
 
 [two]
 REGEX= (?i)kolkata|(?i)mumbai
-FORMAT= queue
-DEST_KEY= indexQueue
+DEST_KEY= queue
+FORMAT= indexQueue
