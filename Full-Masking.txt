@@ -1,0 +1,43 @@
+---------------------------------------------------------------- Full Masking ---------------------------------
+
+ i/p - 
+ this is ayan and his mobile number is 123456778
+ This is raja and his mobile number is 22432435
+ This is sayan and his mobile number is 2335363677
+ 
+ 
+(\w+\s+\w+\s+\w+.*\s+)(\d+)
+                      
+     1                   2 
+
+(.*\s+)(\d+)
+
+
+
+
+SEDCMD-fullmask = s/(\w+\s+\w+\s+\w+.*\s+)(\d+)/\1xxxx/g
+ 
+ o/p --- 
+ 
+ this is ayan and his mobile number is xxxx
+ This is raja and his mobile number is xxxx
+ This is sayan and his mobile number is xxxx 
+ 
+ SEDCMD-<class_name> = s/<old_pattern>/<new_pattern>/g 
+ 
+ 
+ ---------------------------- Regular Expression --------------
+ 
+ \w - word/character 
+ \s - space 
+ \d - digit
+ ? - 0 or 1 occurance
+ + - 1 or more occurance
+ .* - All/everyting 
+ 
+ \?
+ \{
+ \+
+ \<
+ \@
+ \# 
