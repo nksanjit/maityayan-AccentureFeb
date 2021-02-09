@@ -1,0 +1,177 @@
+
+>>>>> Splunk Architecture <<<<<<<<<<<<<<
+
+>>>> Splunk Components 
+
+1) Universal Forwarder ( UF )  --- CLI 
+
+
+GUI + CLI 
+
+2) Heavy Forwarder ( HF ) ---
+  a) Parsing 
+  b) Filtering 
+  
+  
+  -----------
+  this is ayan 
+  this is sayan
+  this is chayan 
+  
+  
+  
+  this is ayan 
+   
+  this is sayan
+  
+  this is chayan 
+  
+  
+  --------------------
+  
+  this is ayan, and he is 33 years old,
+  this is sayan, and he is 45 years old,
+  this is chayan, and he is 67 years old,
+  
+  
+  
+  this is ayan
+  
+  and he is 33 years old
+  
+  
+  this is sayan
+
+  and he is 45 years old
+  
+  this is chayan
+  
+  and he is 67 years old
+  
+  
+ ----------------------------
+
+This is ayan and his acc no 12345678
+this is sayan and his acc no 34567890
+
+
+
+ 
+  
+This is ayan and his acc no xxxx5678
+
+this is sayan and his acc no xxxx7890  
+
+
+
+
+--------------------------------------------------------------------------------------------
+
+this is ayan and he logged in from 198.168.78.90
+this is raju and he logged off from 189.89.90.78
+this is asish and logged in from 198.156.78.90
+
+
+
+
+
+this is ayan and he logged in from 198.168.78.90
+
+this is asish and logged in from 198.156.78.90
+  
+ 
+
+3) Indexer ( IDX )
+
+---
+----- indexes -----
+os 
+wineventlog
+
+
+accenture
+
+vodaphone-os
+
+mastercard -os 
+
+
+-------------------
+
+chrome ---- 
+         ----- Metadata ----
+		               ----- host ---- ip address or the hostname of the application server ( ldap001 , 198.67.89.90 ) 
+					   ----- source  ----- Actual path of  the data  ( /tmp/a.txt , C:\Program Files\Chrome\a.txt )
+					   ----- sourcetype ----- 
+					                  -----  C:\Program Files\Chrome\a.txt ------- txtlog
+									 ------  C:\Program Files\Chrome\b.txt
+									 
+									 C:\Program Files\Chrome\c.txt
+									 
+									 ---  C:\Program Files\Chrome\record.json  ------ jsonlog 
+									 ---  C:\Program Files\Chrome\history.json 
+					             
+4) Search Head ( SH ) 
+5) Deployment Server ( DS )
+
+6) License Master ( LM )  
+
+
+---- License Stacking 
+
+---- 5GB --- 10GB -----   15GB 
+
+
+
+---- License Pooling ------
+
+---- 15 GB ---- 
+
+
+16 GB -------- 1  - 8 Feb 
+                    9
+					10
+					11
+					12 
+					13
+					 
+
+
+
+---- Pool A --- 2 GB -- sh , ds 
+----- Pool B --- 13 GB --- idx 
+
+
+> 5 --- rolling period of 30 days 
+
+
+https://splunkonbigdata.com/2020/07/31/splunk-licensing-enforcement-vs-no-enforcement/  
+< 6.5 --- Enforcement License --- Indexing Continues ----- Searching Blocked 
+>= 6.5 --- No - Enforcement License -- Indexing Continues  ---- Searching Continues ---- splunk Can take legal action against you / your company 
+
+
+License Master Goes Down -----
+
+----- upto 72 hours -------  Indexing Continues ----- Searching Blocked ---- https://splunkonbigdata.com/2018/09/25/what-happens-when-license-master-goes-down/
+
+License Expired ----- 
+
+--------  Indexing Continues ----- Searching Blocked 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
