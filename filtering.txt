@@ -1,0 +1,71 @@
+
+------------------ Filtering -------------------
+
+transforms.conf
+
+HF --------
+
+i/p ---
+
+
+this is test file from city kolkata
+Rajesh is from mumbai
+kolkata is a big city 
+This is chennai 
+asish is from delhi 
+
+
+
+
+o/p -- 
+
+
+this is test file from city kolkata
+
+Rajesh is from mumbai
+
+kolkata is a big city 
+
+
+
+
+
+# cd /opt/splunk/etc/system/local
+
+
+
+# vi props.conf 
+
+[<sourcetype_name>]
+TRANSFORMS-<class_name> = <tranformation_name1>,<tranformation_name2> ................
+
+
+
+# ls 
+
+vi transforms.conf
+
+[<tranformation_name1>]
+attribute = value 
+
+
+
+
+# vi props.conf 
+
+[txtlog]
+SHOULD_LINEMERGE = false 
+TRANSFORMS-filter = one,two
+
+
+# vi transforms.conf 
+
+[one]
+REGEX= .
+FORMAT = queue
+DEST_KEY = nullQueue
+
+[two]
+REGEX= (?i)kolkata|(?i)mumbai
+FORMAT= queue
+DEST_KEY= indexQueue
