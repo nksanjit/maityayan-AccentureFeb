@@ -1,0 +1,12 @@
+
+i/p ---
+
+This is ayan and he logged in from  192.168.89.90 using port 22
+This is raja and he logged out from 198.136.56.10 using port 25
+this is debolina and she logged in from 198.67.1.10 using port 678
+
+o/p --- 
+
+This is ayan and he logged in from  192.168.xxx.xxx using port 2x
+This is raja and he logged out from 198.136.xxx.xxx using port 2x
+this is debolina and she logged in from 198.67.xxx.xxx using port 67x
