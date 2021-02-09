@@ -49,3 +49,16 @@ OR
 
 # /opt/splunkforwarder/bin/splunk restart 
 
+
+
+[monitor:///tmp/test/*.txt]
+sourcetype = txtlog
+index = accenture 
+
+
+
+[monitor:///tmp/test/*.json]
+sourcetype = jsonlog
+index = accenture
+
+
