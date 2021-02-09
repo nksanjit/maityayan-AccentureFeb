@@ -1,0 +1,62 @@
+
+
+Data Masking ------------
+
+hard code masking 
+full masking 
+partial masking 
+
+
+
+SEDCMD-<class_name> = s/<old_pattern>/<new_pattern>/g 
+
+
+i/p --- 
+
+this is ayan he is from kolkata
+this is raja he is from mumbai
+Kolkata is a big city
+Sanjit also lives in KOLKATA 
+Rajesh is from chennai 
+
+
+o/p --- 
+
+
+this is ayan he is from Delhi
+
+this is raja he is from Mumbai
+
+Delhi is a big city
+
+Sanjit also lives in Delhi 
+
+Rajesh is from chennai 
+
+[txtlog] 
+SHOULD_LINEMERGE = false
+#LINE_BREAKER = (,) 
+SEDCMD-citymask = s/(?i)kolkata/Delhi/g
+
+
+
+
+
+
+SEDCMD-maskcity = s/(?i)Mumbai/Delhi/g
+
+
+
+HF --------
+
+props.conf
+
+# cd /opt/splunk/etc/system/local
+
+# ls 
+
+# vi props.conf
+
+[txtlog] 
+SHOULD_LINEMERGE = false
+LINE_BREAKER = (,) 
