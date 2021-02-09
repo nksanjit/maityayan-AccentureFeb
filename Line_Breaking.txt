@@ -1,0 +1,71 @@
+HF --------
+
+props.conf
+
+# cd /opt/splunk/etc/system/local
+
+# ls 
+
+vi props.conf
+
+[<sourcetype_name>]
+attribute = value
+
+
+[host::<host_name>]
+attribute = value
+
+[source::<source_name>]
+attribute = value
+
+
+
+i/p --- 
+
+this is ayan,he is 34 years old, 
+this is sayan,he is 78 years old, 
+this is raja,he is 56 years old,
+
+
+o/p --
+
+this is ayan
+
+he is 34 years old
+
+this is sayan
+
+he is 78 years old 
+
+this is raja
+
+he is 56 years old
+
+
+----------------------------- Line Breaking ------------------------------
+LINE_BREAKER 
+
+# vi props.conf 
+
+[txtlog] 
+SHOULD_LINEMERGE = false
+LINE_BREAKER = (,) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
