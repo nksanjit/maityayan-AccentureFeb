@@ -6,3 +6,8 @@ num
 67
 12
 49
+
+
+ANS: 
+
+| makeresults | fields - _time | eval num="23,45,67,12,49,90,34,567,12,1" , num=split(num,",") | mvexpand num | head 5 | tail 3 | reverse
