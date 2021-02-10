@@ -8,6 +8,8 @@ server failure happened
 this is a successful login
 this is normal login 
 this is priviledge login 
+this is successful and failure 
+this is failure and successful 
 
 
 o/p ---
