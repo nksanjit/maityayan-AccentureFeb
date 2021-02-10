@@ -1,0 +1,8 @@
+| makeresults | fields - _time | eval num="23,45,67,12,49,90,34,567,12,1" , num=split(num,",") | mvexpand num
+
+---- Will show 3rd , 4th and 5th row 
+
+num
+67
+12
+49
