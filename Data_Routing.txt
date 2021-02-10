@@ -1,0 +1,68 @@
+
+-------------------Data Routing -----------------
+
+i/p - 
+This is the login failure 
+this is for successful authentication
+server failure happened 
+this is a successful login
+this is normal login 
+this is priviledge login 
+
+
+o/p ---
+
+success ------
+
+this is for successful authentication
+
+this is a successful login
+
+
+fail ----
+
+This is the login failure 
+
+server failure happened
+
+
+acenture --- 
+
+this is normal login 
+
+this is priviledge login 
+
+
+
+
+Indexer ---------------
+
+create two indexes called "success" and "fail"
+
+
+
+HF ------
+# cd /opt/splunk/etc/system/local
+
+
+
+# vi props.conf 
+
+[txtlog]
+SHOULD_LINEMERGE = false 
+TRANSFORMS-route = successdata,faildata 
+
+
+# vi transforms.conf 
+
+
+[successdata]
+REGEX= (?i)successful   ----------------- Regular Expression
+DEST_KEY= _MetaData:Index 
+FORMAT= success ------------------------- index name 
+
+[faildata]
+REGEX= (?i)failure ----------------------- Regular Expression
+DEST_KEY= _MetaData:Index 
+FORMAT= fail ------------------------ index name 
+
