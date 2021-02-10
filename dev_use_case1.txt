@@ -1,0 +1,5 @@
+
+
+ index=_internal sourcetype=splunkd_ui_access | table method,status | dedup method,status
+ 
+ 200 --- 299 as well as >= 400 --- should be the output 
