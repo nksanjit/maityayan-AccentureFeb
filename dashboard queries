@@ -1,0 +1,11 @@
+index=_internal sourcetype=splunkd_ui_access |timechart span=4h count by method
+index=_internal sourcetype=splunkd_ui_access | stats count
+index=_internal sourcetype=splunkd_ui_access | top file
+index=_internal sourcetype=splunkd_ui_access | stats count by method | sort - count
+
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method,status 
+| eval Status_pct=round((status/(status+count))*100,2)." %" , Count_pct=round((count/(status+count))*100,2)." %"
+
+
+index=_internal sourcetype=splunkd_ui_access |timechart span=4h count by method
