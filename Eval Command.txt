@@ -1,0 +1,83 @@
+| eval <destination_field_name> = logic, boolean operation 
+	
+	
+	| eval field_name = round(field_name,<n>)
+	
+----------------------- Round / Concatination ------------------------
+	
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method,status 
+| eval  Div=round((status/count),2)." %"
+
+
+------------------------------ 
+
+
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method,status 
+| eval  Multiplication=status*count
+
+
+---------------------------------  Upper /lower ------------------------------
+
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method | eval low=lower(method),up=upper(low)
+
+--------------------------------- len -----------------------------------------------
+
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method | eval length=len(method)
+
+--------------------------------------
+
+if / case ----------
+
+----------------------------------------------------------------------------IF ----------------------------------------------------
+
+ | eval <new_field_name>=if(con,value,else )
+
+ 
+ | eval Designation=if(employee_name="splunkd","Manager","TL")
+ 
+ | eval Designation=if(employee_name="splunkd" OR employee_name="control","Manager","TL")
+ 
+ 
+ 
+ index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name | eval Designation=if(employee_name="splunkd" OR employee_name="control","Manager","TL")
+
+
+
+------------------------------
+
+index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name , count as salary | eval Post=if(salary > 1000,"Senior","Junior")
+
+
+----- Nested IF -------
+
+    | eval <new_field_name>=if(con1,value1,if(con2,value2,else))
+	
+	| eval Designation=if(employee_name="splunkd","Manager",if(employee_name="control","TL","Admins"))
+	
+	
+	index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name , count as salary | eval Designation=if(employee_name="splunkd","Manager",if(employee_name="control","TL","Admins"))
+
+
+----------------------------------------------------------------------- CASE  ----------------------------------------------------------------------------------
+	
+	 | eval <new_field_name>=case(case1,val1,case2,val2,case3,val3..........................default_case,default_value) 
+	 
+	 
+	 index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name , count as salary | eval Designation=case(employee_name="splunkd","Manager",1=1,"TL")
+
+
+index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name , count as salary | eval Designation=case(employee_name="splunkd","Manager",employee_name="control","Admin",employee_name="jobs","Intern",1=1,"TL")
+
+
+index=_internal sourcetype=splunkd_ui_access 
+| top file showperc=f | rename file as employee_name , count as salary | eval Designation=case(employee_name="splunkd" OR employee_name="control","Admin",employee_name="jobs","Intern",1=1,"TL")
+
