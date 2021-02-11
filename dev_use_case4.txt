@@ -1,0 +1,24 @@
+index=_internal sourcetype=splunkd_ui_access 
+| table method,status,bytes
+| dedup method 
+| rename method as Product , status as SC , bytes as TC
+
+
+Product     SC       TC
+a           1         6
+b           4         9
+
+-----------------------
+
+(1+6) + (4 + 9) = 20 
+
+( 1+ 4) + ( 6 + 9) = 20 
+
+
+
+-------------------------------------
+
+
+OverallCost
+
+20
