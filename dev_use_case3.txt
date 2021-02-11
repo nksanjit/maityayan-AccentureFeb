@@ -1,0 +1,11 @@
+index=_internal sourcetype=splunkd_ui_access | stats count by method , status
+
+----------------------
+
+Summation of status and count 
+
+-------
+
+Sum_Status           Sum_Count 
+
+12345                   45678 
