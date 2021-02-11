@@ -1,0 +1,34 @@
+Use Case :  1 -----------------------------
+
+index=_internal sourcetype=splunkd_ui_access | stats count by method,status
+
+------------------------ Find the percentage of status and count field -----------------
+
+method status count Status_pct Count_pct 
+a       2       2      50 %       50 % 
+b       3       2       60 %       40 % 
+
+
+----------------------------------------------------------------------
+
+
+Use Case : 2 ------------------
+
+index=_internal sourcetype=splunkd_ui_access | stats count by method,status
+
+-----------------------------------------
+
+method   status   count     http_error_description 
+a         200      3           successful 
+
+b         404      5           error 
+
+c        303      567           redirection
+
+--------------
+
+200 - 299 ------------- successful 
+300 - 399 ------- redirection
+> 400 ----------- error 
+
+
