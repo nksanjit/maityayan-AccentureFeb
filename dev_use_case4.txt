@@ -22,3 +22,21 @@ b           4         9
 OverallCost
 
 20
+
+--------------------------
+
+ANS : --- 1 
+
+index=_internal sourcetype=splunkd_ui_access 
+| table method,status,bytes
+| dedup method 
+| rename method as Product , status as SC , bytes as TC | addcoltotals | addtotals fieldname="OverallCost" | tail 1 | fields OverallCost
+
+
+ANS: --   2
+index=_internal sourcetype=splunkd_ui_access 
+| table method,status,bytes
+| dedup method 
+| rename method as Product , status as SC , bytes as TC | addtotals | stats sum(Total) as OverallCost
+
+
