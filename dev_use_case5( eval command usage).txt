@@ -41,3 +41,14 @@ c        303      567           redirection
 > 400 ----------- error 
 
 
+-------------------
+
+ANS : 
+
+index=_internal sourcetype=splunkd_ui_access 
+| stats count by method,status 
+| eval http_error_description= case (status>=200 AND status<=299, "successful", status>=300 AND status<=399, "redirection", status>=400, "error")
+
+
+
+
