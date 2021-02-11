@@ -1,0 +1,12 @@
+index=_internal sourcetype=splunkd_ui_access 
+| table method,status,bytes
+| dedup method 
+| rename method as Product , status as SC , bytes as TC 
+| addcoltotals labelfield="Product" label="Total Cost"
+
+
+
+------------------------------------------
+
+https://splunkonbigdata.com/2015/05/05/usage-of-splunk-commands-addcoltotals/
+
