@@ -1,0 +1,9 @@
+index=_internal sourcetype=splunkd_ui_access 
+| table method,status,bytes,date_minute
+| dedup method 
+| rename method as Product , status as SC , bytes as TC | addtotals fieldname="Cost/Product" SC,TC
+
+
+---------------------------------------
+
+https://splunkonbigdata.com/2018/09/05/usage-of-splunk-commands-addtotals/
