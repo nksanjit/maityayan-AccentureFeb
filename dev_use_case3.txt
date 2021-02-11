@@ -9,3 +9,7 @@ Summation of status and count
 Sum_Status           Sum_Count 
 
 12345                   45678 
+
+
+ANS : --
+index=_internal sourcetype=splunkd_ui_access | stats count by method,status | stats sum(status) as Sum_Status , sum(count) as Sum_Count
