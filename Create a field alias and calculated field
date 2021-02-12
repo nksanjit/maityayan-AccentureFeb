@@ -1,0 +1,7 @@
+
+
+index=_internal sourcetype=splunkd_ui_access  | stats count by method 
+
+
+---------- create a field alias for the "method" field as "http_method" 
+---------- create a calculated field called "LOW" taking the ' lower(method) '
