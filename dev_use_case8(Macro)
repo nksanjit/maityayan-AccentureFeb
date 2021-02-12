@@ -1,0 +1,8 @@
+(index=_internal sourcetype=splunkd_ui_access ) 
+| stats count by method,status 
+ | method="get" status="200"
+ 
+ 
+ 
+ try to create a macro using the above query.
+
