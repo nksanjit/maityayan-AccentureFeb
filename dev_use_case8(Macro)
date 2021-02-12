@@ -1,6 +1,6 @@
 (index=_internal sourcetype=splunkd_ui_access ) 
 | stats count by method,status 
- | method="get" status="200"
+ | search method="get" status="200"
  
  
  
