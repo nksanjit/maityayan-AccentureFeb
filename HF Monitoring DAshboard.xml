@@ -1,0 +1,161 @@
+<form theme="dark">
+  <label>HF Monitoring Clone</label>
+  <fieldset submitButton="false">
+    <input type="dropdown" token="host_token" searchWhenChanged="true">
+      <label>Select Host</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <fieldForLabel>hostname</fieldForLabel>
+      <fieldForValue>hostname</fieldForValue>
+      <search>
+        <query>| inputlookup hf_status_monitoring.csv 
+| dedup hostname 
+| table hostname</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>| metadata type=hosts index=_internal | search [  |inputlookup hf_status_monitoring.csv | table hostname | rename hostname as host ] | eval Diff=now()-lastTime | eval status=if(Diff &gt;= 300,"Not Responding","Active")  | eval "Last Active Time(HH:MM:SS)"=tostring(Diff,"duration")."  Ago" | table host status,"Last Active Time(HH:MM:SS)" | search host="$host_token$"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+          <refresh>30s</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">none</option>
+        <format type="color" field="status">
+          <colorPalette type="map">{"Active":#53A051,"Not Responding":#DC4E41}</colorPalette>
+        </format>
+      </table>
+    </panel>
+    <panel>
+      <table>
+        <title>CPU Usage</title>
+        <search>
+          <query>index=shiptest host=*.com sourcetype=cpu | stats avg(cpu_load_percent) as "cpu_usage%" by host | eval "cpu_usage%"=round('cpu_usage%',2) | search host="$host_token$"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+          <refresh>30s</refresh>
+          <refreshType>delay</refreshType>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+        <format type="color" field="cpu_usage%">
+          <colorPalette type="list">[#53A051,#F8BE34,#F1813F,#DC4E41]</colorPalette>
+          <scale type="threshold">50,70,80</scale>
+        </format>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>Memory Utilization</title>
+        <search>
+          <query>index=shiptest host=*.com sourcetype=vmstat_metric metric_name="*memTotalMB" 
+| rex field=_raw "\s+(?&lt;TotalMemory&gt;\d+)\s+(?&lt;FreeMemory&gt;\d+)\s+(?&lt;UsedMemory&gt;\d+)\s+(?&lt;FreePct&gt;\S+)\s+(?&lt;UsedPct&gt;\S+)\s+" 
+| stats latest(TotalMemory) as TotalMemory(MB),latest(FreeMemory) as FreeMemory(MB),latest(UsedMemory) as UsedMemory(MB),latest(FreePct) as FreePct,latest(UsedPct) as UsedPct,avg(UsedPct) as AverageUsedPct by host 
+| eval AverageUsedPct=round(AverageUsedPct,1) | search host="$host_token$"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <table>
+        <title>File System Usage</title>
+        <search>
+          <query>index=shiptest host=*.com sourcetype=df  | eval Free=round((FreeMBytes/1024),1)."G"  | stats latest(Size) as Size,latest(Used) as Used,latest(Free) as Free,latest(UsePct) as UsePct by host,mount,Type | stats list(*) as * by host | table host,mount,Type,Size,Used,Free,UsePct | search host="$host_token$"</query>
+          <earliest>-15m</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <chart>
+        <title>Version Distribution</title>
+        <search>
+          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* 
+| stats values(fwdType) as forwarder_type, latest(version) as version, values(arch) as arch, values(os) as os, max(_time) as last_connected, sum(kb) as new_sum_kb, sparkline(avg(tcp_KBps), 1m) as new_avg_tcp_kbps_sparkline, avg(tcp_KBps) as new_avg_tcp_kbps, avg(tcp_eps) as new_avg_tcp_eps by guid, hostname,sourceIp
+| stats values(forwarder_type) as forwarder_type, max(version) as version, values(arch) as arch, values(os) as os, max(last_connected) as last_connected, values(new_sum_kb) as sum_kb, values(new_avg_tcp_kbps_sparkline) as avg_tcp_kbps_sparkline, values(new_avg_tcp_kbps) as avg_tcp_kbps, values(new_avg_tcp_eps) as avg_tcp_eps by guid, hostname ,sourceIp
+| addinfo 
+| eval status = if(isnull(sum_kb) or (sum_kb &lt;= 0) or (last_connected &lt; (info_max_time - 900)), "missing", "active") 
+| eval sum_kb = round(sum_kb, 2) 
+| eval avg_tcp_kbps = round(avg_tcp_kbps, 2) 
+| eval avg_tcp_eps = round(avg_tcp_eps, 2) 
+| fields guid, hostname, forwarder_type, version, arch, os, status, last_connected, sum_kb, avg_tcp_kbps_sparkline, avg_tcp_kbps, avg_tcp_eps 
+| search forwarder_type=full NOT hostname=*splunkcloud.com | search hostname="$host_token$" | stats count by version | eval version= version." ( # ".count." )"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+    <panel>
+      <chart>
+        <title>OS Distribution</title>
+        <search>
+          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* 
+| stats values(fwdType) as forwarder_type, latest(version) as version, values(arch) as arch, values(os) as os, max(_time) as last_connected, sum(kb) as new_sum_kb, sparkline(avg(tcp_KBps), 1m) as new_avg_tcp_kbps_sparkline, avg(tcp_KBps) as new_avg_tcp_kbps, avg(tcp_eps) as new_avg_tcp_eps by guid, hostname,sourceIp
+| stats values(forwarder_type) as forwarder_type, max(version) as version, values(arch) as arch, values(os) as os, max(last_connected) as last_connected, values(new_sum_kb) as sum_kb, values(new_avg_tcp_kbps_sparkline) as avg_tcp_kbps_sparkline, values(new_avg_tcp_kbps) as avg_tcp_kbps, values(new_avg_tcp_eps) as avg_tcp_eps by guid, hostname ,sourceIp
+| addinfo 
+| eval status = if(isnull(sum_kb) or (sum_kb &lt;= 0) or (last_connected &lt; (info_max_time - 900)), "missing", "active") 
+| eval sum_kb = round(sum_kb, 2) 
+| eval avg_tcp_kbps = round(avg_tcp_kbps, 2) 
+| eval avg_tcp_eps = round(avg_tcp_eps, 2) 
+| fields guid, hostname, forwarder_type, version, arch, os, status, last_connected, sum_kb, avg_tcp_kbps_sparkline, avg_tcp_kbps, avg_tcp_eps 
+| search forwarder_type=full NOT hostname=*splunkcloud.com  | search hostname="$host_token$"| stats count by os | eval os= os." ( # ".count." )"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="charting.chart">pie</option>
+        <option name="charting.drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </chart>
+    </panel>
+  </row>
+  <row>
+    <panel>
+      <input type="radio" token="st" searchWhenChanged="true">
+        <label>Status</label>
+        <choice value="*">All</choice>
+        <choice value="active">Active</choice>
+        <choice value="missing">Down</choice>
+        <default>*</default>
+      </input>
+      <table>
+        <search>
+          <query>index=_internal sourcetype=splunkd group=tcpin_connections (connectionType=cooked OR connectionType=cookedSSL) NOT eventType=* 
+| stats values(fwdType) as forwarder_type, latest(version) as version, values(arch) as arch, values(os) as os, max(_time) as last_connected, sum(kb) as new_sum_kb, sparkline(avg(tcp_KBps), 1m) as new_avg_tcp_kbps_sparkline, avg(tcp_KBps) as new_avg_tcp_kbps, avg(tcp_eps) as new_avg_tcp_eps by guid, hostname,sourceIp
+| stats values(forwarder_type) as forwarder_type, max(version) as version, values(arch) as arch, values(os) as os, max(last_connected) as last_connected, values(new_sum_kb) as sum_kb, values(new_avg_tcp_kbps_sparkline) as avg_tcp_kbps_sparkline, values(new_avg_tcp_kbps) as avg_tcp_kbps, values(new_avg_tcp_eps) as avg_tcp_eps by guid, hostname ,sourceIp
+| addinfo 
+| eval status = if(isnull(sum_kb) or (sum_kb &lt;= 0) or (last_connected &lt; (info_max_time - 300)), "missing", "active") 
+| eval sum_kb = round(sum_kb, 2) 
+| eval avg_tcp_kbps = round(avg_tcp_kbps, 2) 
+| eval avg_tcp_eps = round(avg_tcp_eps, 2) 
+| fields guid, hostname, forwarder_type, version, arch, os, status, last_connected, sum_kb, avg_tcp_kbps_sparkline, avg_tcp_kbps, avg_tcp_eps 
+| search forwarder_type=full NOT hostname=*splunkcloud.com AND status="$st$" |  search hostname="$host_token$"</query>
+          <earliest>-24h@h</earliest>
+          <latest>now</latest>
+        </search>
+        <option name="drilldown">cell</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
+</form>
