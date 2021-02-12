@@ -1,0 +1,82 @@
+
+
+Install App / Add-on -----
+
+CLI > 
+
+# cd $SPLUNK_HOME/etc/apps/
+
+# cp /tmp/lookup.....tgz   .
+
+# tar -xvzf lookup....tgz 
+
+# cd SPLUNK_HOME/bin
+
+# ./splunk restart 
+
+
+
+
+GUI > 
+
+1) 
+Manage Apps >>> Browse more apps >> 
+
+
+
+2 ) 
+
+
+Manage Apps >>> Install From File >>>
+
+-------------------------------------------------
+
+Unstall An App/ Add-on From Splunk 
+
+CLI >>>
+
+# cd SPLUNK_HOME/bin
+
+# ./splunk stop 
+
+# cd SPLUNK_HOME/etc/apps/
+
+# tar cvf lookup_editor_backup.tar.gz  lookup_editor 
+
+# rm -rf lookup_editor
+
+# cd SPLUNK_HOME/bin
+
+# ./splunk restart 
+
+
+---------------------------------
+
+
+Upgrade and App / Add-on
+
+------
+
+
+# cd SPLUNK_HOME/etc/apps/
+
+# tar -cvf lookup_editor_backup_v1.0.0.tar.gz  lookup_editor 
+
+# cp /tmp/lookup-v2.0.0.....tgz   .
+
+# tar -xvzf lookup-v2.0.0....tgz 
+
+
+# cd SPLUNK_HOME/bin
+
+# ./splunk restart 
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+ index = main 
+ 
+ 
+ index= os 
